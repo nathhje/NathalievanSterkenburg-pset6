@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Zoek een School</string>
+    <string name="create">Creer Account</string>
+    <string name="signin">Log In</string>
+    <string name="email">Email</string>
+    <string name="password">Wachtwoord</string>
+    <string name="placename">Type een plaatsnaam in</string>
+    <string name="search">Zoek</string>
+    <string name="nieuwsbrief">Nieuwsbrief</string>
+    <string name="nieuwsinfo">"Zoek een School" brengt maandelijks een nieuwsbrief uit met informatie
+        over verschillende scholen. Wil jij deze nieuwsbrief ook ontvangen? Klik dan op onderstaande
+        knop. Als je de nieuwsbrief al ontvangt, vind je hieronder een knop om je af te melden voor
+        de nieuwsbrief.</string>
+    <string name="aanmelden">Aanmelden Nieuwsbrief</string>
+    <string name="afmelden">Afmelden Nieuwsbrief</string>
+    <string name="aangemeld">Je bent op dit moment niet aangemeld voor de nieuwsbrief.</string>
+</resources>

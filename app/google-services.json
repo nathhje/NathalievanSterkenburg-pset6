@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "306289657425",
+    "firebase_url": "https://nathalievansterkenburg-pset6.firebaseio.com",
+    "project_id": "nathalievansterkenburg-pset6",
+    "storage_bucket": "nathalievansterkenburg-pset6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306289657425:android:11e153a857d31fc7",
+        "android_client_info": {
+          "package_name": "com.example.gebruiker.nathalievansterkenburg_pset6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306289657425-7bhbjn33jtnc5f3cq5mu3obrvsa9u3hh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gebruiker.nathalievansterkenburg_pset6",
+            "certificate_hash": "390ed6b3a1e782be9d73504813121f4aa24af6c7"
+          }
+        },
+        {
+          "client_id": "306289657425-4046qigr4thnuo52fsts976r8svrfuao.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1KSwxOfRjr54VcHGh1LUvEFxh7iOD4B0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306289657425-4046qigr4thnuo52fsts976r8svrfuao.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
