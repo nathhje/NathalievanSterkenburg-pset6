@@ -16,20 +16,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
+
     String email;
     String password;
     EditText emailBox;
     EditText passwordBox;
+    TextView inlogError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        inlogError = (TextView) findViewById(R.id.inlogerror);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         if (user == null) {
             startActivity(new Intent(this, SearchActivity.class));
         }
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -88,10 +97,18 @@ public class MainActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+
+                            if(password.length()<6){
+                                inlogError.setText("Wachtwoord moet uit minstens 6 tekens bestaan");
+                            }
+                            else {
+                                inlogError.setText("Emailadres of wachtwoord is al in gebruik");
+                            }
                         }
                         else {
                             Toast.makeText(MainActivity.this, "created: " + email,
                                     Toast.LENGTH_SHORT).show();
+                            mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("afgemeld");
                         }
 
                         // ...
@@ -120,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("failed to log in", "signInWithEmail", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            TextView inlogError = (TextView) findViewById(R.id.inlogerror);
                             inlogError.setText("Fout emailadres of wachtwoord");
                         }
                         else {

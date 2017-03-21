@@ -57,7 +57,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 // info must be retrieved for right ID
-                asyncTask.execute("Instellingsnaam=" + schools.get(position).replaceAll(" ", "_"));
+                asyncTask.execute("instellingsnaam=" + schools.get(position).replaceAll(" ", "-"));
             }
         });
     }
@@ -82,5 +82,7 @@ public class SearchActivity extends AppCompatActivity {
     public void startNieuwsbrief(View view) {
         startActivity(new Intent(this, NieuwsbriefActivity.class));
     }
+
+    public void onBackPressed() {}
 
 }

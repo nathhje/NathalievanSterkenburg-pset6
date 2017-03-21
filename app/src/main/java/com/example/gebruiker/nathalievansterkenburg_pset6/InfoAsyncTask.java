@@ -67,16 +67,26 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
             // the result is put in a JSONObject
             JSONObject schoolsearch = new JSONObject(result);
 
-            // the useful information is extracted from "search"
-            JSONObject inschoolsearch = schoolsearch.getJSONObject("results");
+            Log.i("het object", schoolsearch.toString());
 
-            school = inschoolsearch.getJSONObject("INSTELLINGSNAAM").toString();
-            niveaus = inschoolsearch.getJSONObject("ONDERWIJSSTRUCTUUR").toString();
-            plaats = inschoolsearch.getJSONObject("PLAATSNAAM").toString();
-            adres = inschoolsearch.getJSONObject("STRAATNAAM").toString() +
-                    inschoolsearch.getJSONObject("HUISNUMMER-TOEVOEGING").toString();
-            website = inschoolsearch.getJSONObject("INTERNETADRES").toString();
-            nummer = inschoolsearch.getJSONObject("TELEFOONNUMMER").toString();
+            // the useful information is extracted from "search"
+            JSONArray inschool = schoolsearch.getJSONArray("results");
+            Log.i("in resultaten", inschool.toString());
+            
+            JSONObject inschoolsearch = inschool.getJSONObject(0);
+            Log.i("het resultaat", inschoolsearch.toString());
+            
+            school = inschoolsearch.getString("INSTELLINGSNAAM");
+            niveaus = inschoolsearch.getString("ONDERWIJSSTRUCTUUR");
+            plaats = inschoolsearch.getString("PLAATSNAAM");
+            adres = inschoolsearch.getString("STRAATNAAM") + " " +
+                    inschoolsearch.getString("HUISNUMMER-TOEVOEGING");
+            website = inschoolsearch.getString("INTERNETADRES");
+            nummer = inschoolsearch.getString("TELEFOONNUMMER");
+
+            Log.i(school, niveaus);
+            Log.i(plaats, adres);
+            Log.i(website,nummer);
 
         } catch (JSONException e) {
             e.printStackTrace();

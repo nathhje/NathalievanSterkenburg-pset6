@@ -36,4 +36,9 @@ public class InfoActivity extends AppCompatActivity {
         nummer.setText(theIntent.getStringExtra("nummer"));
 
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, SearchActivity.class));
+    }
 }
