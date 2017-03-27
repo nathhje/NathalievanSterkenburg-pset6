@@ -3,6 +3,8 @@ package com.example.gebruiker.nathalievansterkenburg_pset6;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.LoginFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,22 +19,33 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
+    EditText searchBox;
+    String search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        Log.i("het lijkt of ik hier", "niet kom");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         String email = user.getEmail();
 
         TextView showEmail = (TextView) findViewById(R.id.useremail);
         showEmail.setText("Ingelogd als " + email);
+
+
+        searchBox = (EditText) findViewById(R.id.search);
+        searchBox.setText(getIntent().getStringExtra("search"));
+        String urlSearch = getIntent().getStringExtra("search");
+
+        SearchAsyncTask asyncTask = new SearchAsyncTask(this);
+        asyncTask.execute("plaatsnaam=" + urlSearch);
     }
 
     public void searchSchools(View view) {
-        EditText searchBox = (EditText) findViewById(R.id.search);
-        String search = searchBox.getText().toString();
+        search = searchBox.getText().toString();
         String urlSearch = search.replaceAll(" ", "_");
 
         SearchAsyncTask asyncTask = new SearchAsyncTask(this);
@@ -49,6 +62,8 @@ public class SearchActivity extends AppCompatActivity {
         ListView thelist = (ListView) findViewById(R.id.listofschools);
         assert thelist != null;
         thelist.setAdapter(adapter);
+
+        Log.i("ik denk", "hier te komen");
 
         // when list item is clicked, additional info for that movie is retrieved
         final InfoAsyncTask asyncTask = new InfoAsyncTask(this);
@@ -74,6 +89,7 @@ public class SearchActivity extends AppCompatActivity {
         infoIntent.putExtra("adres", adres);
         infoIntent.putExtra("website", website);
         infoIntent.putExtra("nummer", nummer);
+        infoIntent.putExtra("search", search);
 
         // InfoActivity
         startActivity(infoIntent);

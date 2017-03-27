@@ -51,4 +51,29 @@
         android:layout_marginTop="10dp"
         android:id="@+id/nummer"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nummer"
+        android:text="@string/meelopen"
+        android:layout_marginTop="10dp"
+        android:id="@+id/meelopen"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/meelopen"
+        android:text="@string/aanmelden"
+        android:id="@+id/meeloopaanmelding"
+        android:onClick="meeloopMeldAan"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/meelopen"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:text="@string/aangemeldmeelopen"
+        android:id="@+id/aangemeldmeelopen"/>
+
 </RelativeLayout>

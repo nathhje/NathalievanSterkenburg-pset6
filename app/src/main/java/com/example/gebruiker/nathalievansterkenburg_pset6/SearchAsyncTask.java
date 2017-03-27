@@ -82,7 +82,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        Log.i("wat", "gek");
         // the new activity is started with the information
         this.searchAct.makeSchoolAdapter(schools);
     }

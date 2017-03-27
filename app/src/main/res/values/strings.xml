@@ -15,4 +15,10 @@
     <string name="afmelden">Afmelden Nieuwsbrief</string>
     <string name="aangemeld">Je bent op dit moment niet aangemeld voor de nieuwsbrief.</string>
     <string name="back">Terug naar Zoeken</string>
+    <string name="instructie">Welkom bij "Zoek een School". Met deze app kun je informatie over alle
+        middelbare scholen in Nederland vinden of je aanmelden voor de nieuwsbrief. Maak nu een account
+        aan en start meteen met het bekijken van scholen.</string>
+    <string name="meelopen">Meld je aan voor een meeloopdag bij deze school door op onderstaande knop
+        te klikken. Je zult dan een email ontvangen van de school om de meeloopdag in te plannen.</string>
+    <string name="aangemeldmeelopen">Je bent op dit moment al een meeloopdag bij deze school aan het plannen.</string>
 </resources>

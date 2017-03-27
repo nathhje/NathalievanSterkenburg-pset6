@@ -48,11 +48,8 @@ public class NieuwsbriefActivity extends AppCompatActivity {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.i("what about here", email);
-                String existsEmail = dataSnapshot.child("nieuwsbrief").child(email.replaceAll(".", "")).getValue(String.class);
-                Log.i("gaat dit goed", existsEmail);
 
-                if(existsEmail.equals("aangemeld")) {
+                if(dataSnapshot.child("nieuwsbrief").hasChild(email.replaceAll(".", ""))) {
                     ingeschreven.setText("Je bent op dit moment aangemeld voor de nieuwsbrief");
                     afmelden.setVisibility(View.VISIBLE);
                     aanmelden.setVisibility(View.GONE);
@@ -62,6 +59,20 @@ public class NieuwsbriefActivity extends AppCompatActivity {
                     afmelden.setVisibility(View.GONE);
                     aanmelden.setVisibility(View.VISIBLE);
                 }
+//                Log.i("what about here", email);
+//                String existsEmail = dataSnapshot.child("nieuwsbrief").child(email.replaceAll(".", "")).getValue(String.class);
+//                Log.i("gaat dit goed", existsEmail);
+//
+//                if(existsEmail.equals("aangemeld")) {
+//                    ingeschreven.setText("Je bent op dit moment aangemeld voor de nieuwsbrief");
+//                    afmelden.setVisibility(View.VISIBLE);
+//                    aanmelden.setVisibility(View.GONE);
+//                }
+//                else {
+//                    ingeschreven.setText("Je bent op dit moment niet aangemeld voor de nieuwsbrief");
+//                    afmelden.setVisibility(View.GONE);
+//                    aanmelden.setVisibility(View.VISIBLE);
+//                }
             }
 
             @Override
@@ -115,7 +126,7 @@ public class NieuwsbriefActivity extends AppCompatActivity {
         afmelden.setVisibility(View.VISIBLE);
         ingeschreven.setText("Je bent op dit moment aangemeld voor de nieuwsbrief");
 
-        mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("aangemeld");
+        mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue(email);
     }
 
     public void meldAf(View view) {
@@ -123,7 +134,7 @@ public class NieuwsbriefActivity extends AppCompatActivity {
         afmelden.setVisibility(View.GONE);
         ingeschreven.setText("Je bent op dit moment niet aangemeld voor de nieuwsbrief");
 
-        mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("aangemeld");
+        mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).removeValue();
     }
 
     public void backToSearch(View view) {

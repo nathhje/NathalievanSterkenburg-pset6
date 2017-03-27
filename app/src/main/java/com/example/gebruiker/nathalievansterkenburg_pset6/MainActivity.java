@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
 
-    String email;
-    String password;
+    String email = "kort";
+    String password = "kort";
     EditText emailBox;
     EditText passwordBox;
+    EditText loginEmail;
+    EditText loginPassword;
     TextView inlogError;
 
     @Override
@@ -85,11 +88,25 @@ public class MainActivity extends AppCompatActivity {
         email = emailBox.getText().toString();
         password = passwordBox.getText().toString();
 
+        Log.i("er gebeurt iets raars", "met het wachtwoord");
+        Log.i("deze shit", password);
+        
+        if(TextUtils.isEmpty(email)) {
+            Log.i("ff", "checken");
+            email = " ";
+        }
+        if(TextUtils.isEmpty(password)) {
+            Log.i("ff", "checkuh");
+            password = " ";
+        }
+
+        Log.i("track", email);
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("creatin user", "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        Log.d("creating user", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -101,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                             if(password.length()<6){
                                 inlogError.setText("Wachtwoord moet uit minstens 6 tekens bestaan");
                             }
+                            if(!email.contains("@") || !email.contains(".")){
+                                inlogError.setText("Voer een geldig emailadres in");
+                            }
                             else {
                                 inlogError.setText("Emailadres of wachtwoord is al in gebruik");
                             }
@@ -108,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(MainActivity.this, "created: " + email,
                                     Toast.LENGTH_SHORT).show();
-                            mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("afgemeld");
+                            //mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("afgemeld");
                         }
 
                         // ...
@@ -118,11 +138,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void logIn(View view) {
 
-        emailBox = (EditText) findViewById(R.id.email);
-        passwordBox = (EditText) findViewById(R.id.password);
+        loginEmail = (EditText) findViewById(R.id.loginemail);
+        loginPassword = (EditText) findViewById(R.id.loginpassword);
 
-        email = emailBox.getText().toString();
-        password = passwordBox.getText().toString();
+        email = loginEmail.getText().toString();
+        password = loginPassword.getText().toString();
+
+        if(TextUtils.isEmpty(email)) {
+            Log.i("ff", "checken");
+            email = " ";
+        }
+        if(TextUtils.isEmpty(password)) {
+            Log.i("ff", "checkuh");
+            password = " ";
+        }
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -130,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("logging in", "signInWithEmail:onComplete:" + task.isSuccessful());
 
+                        Log.i("ik ben hier", "en de taak is succesvol");
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
@@ -140,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                             inlogError.setText("Fout emailadres of wachtwoord");
                         }
                         else {
+                            Log.i("maar kom", "ik hier nog");
                             Toast.makeText(MainActivity.this, "signed in: " + email,
                                     Toast.LENGTH_SHORT).show();
                             startSearch();
@@ -152,10 +183,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void startSearch() {
 
-        emailBox.setText("");
-        passwordBox.setText("");
+        Log.i("is dit", "het?");
 
-        startActivity(new Intent(this, SearchActivity.class));
+        Log.i("hier is alles", "nog oke");
+
+        Intent intent = new Intent(this, SearchActivity.class);
+        intent.putExtra("search", " ");
+
+        Log.i("maar anders", "zit het hier");
+        startActivity(intent);
     }
 
 }
