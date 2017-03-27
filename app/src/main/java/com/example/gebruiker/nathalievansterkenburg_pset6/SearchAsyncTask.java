@@ -9,17 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Created by Gebruiker on 20-3-2017.
+ * Created by Nathalie on 20-3-2017.
  */
 
 public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
@@ -38,7 +32,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
         Toast.makeText(context, "searching for schools", Toast.LENGTH_SHORT).show();
     }
 
-    // movies are retrieved
+    // schools are retrieved
     protected String doInBackground(String... parameters) {
 
         try {
@@ -57,7 +51,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        // the information on the movie
+        // list of schools
         ArrayList<String> schools = new ArrayList<String>();
 
         try {
@@ -65,16 +59,16 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
             // the result is put in a JSONObject
             JSONObject schoolsearch = new JSONObject(result);
 
-            // the useful information is extracted from "search"
+            // the schools are extracted from "results"
             JSONArray inschoolsearch = schoolsearch.getJSONArray("results");
 
-            // the information is put in lists
+            // the schools are put in a list
             for (int i = 0; i < inschoolsearch.length(); i++) {
 
-                // each result is in turn extracted from the array
+                // each school is extracted from the result
                 JSONObject listitem = inschoolsearch.getJSONObject(i);
 
-                // all pieces of information are stored in their own array
+                // and the shools name is stored in the array
                 String school = listitem.getString("INSTELLINGSNAAM");
                 schools.add(school);
             }
@@ -82,8 +76,8 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("wat", "gek");
-        // the new activity is started with the information
+
+        // a list of the schools is made
         this.searchAct.makeSchoolAdapter(schools);
     }
 }

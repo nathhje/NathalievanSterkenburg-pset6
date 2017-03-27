@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,22 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+    // the firebase
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private DatabaseReference mDatabase;
 
-    String email = "kort";
-    String password = "kort";
-    EditText emailBox;
-    EditText passwordBox;
-    EditText loginEmail;
-    EditText loginPassword;
+    String email;
+    String password;
     TextView inlogError;
 
     @Override
@@ -39,82 +30,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // used to communicate what went wrong with user
         inlogError = (TextView) findViewById(R.id.inlogerror);
 
+        // instance of authentication is retrieved
         mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d("signed in", "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d("signed out", "onAuthStateChanged:signed_out");
-                }
-                // ...
-            }
-        };
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            startActivity(new Intent(this, SearchActivity.class));
-        }
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     public void createUser(View view) {
+        // creates new user
 
         EditText emailBox = (EditText) findViewById(R.id.email);
         EditText passwordBox = (EditText) findViewById(R.id.password);
 
+        // user data is retrieved from EditTexts
         email = emailBox.getText().toString();
         password = passwordBox.getText().toString();
 
-        Log.i("er gebeurt iets raars", "met het wachtwoord");
-        Log.i("deze shit", password);
-        
+        // handles lack of user input
         if(TextUtils.isEmpty(email)) {
-            Log.i("ff", "checken");
             email = " ";
         }
         if(TextUtils.isEmpty(password)) {
-            Log.i("ff", "checkuh");
             password = " ";
         }
 
-        Log.i("track", email);
-
+        // attempt at creating new user
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("creating user", "createUserWithEmail:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        // informs user creation was unsuccesful
                         if (!task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 
+                            // message to user varies depending on error made
                             if(password.length()<6){
                                 inlogError.setText("Wachtwoord moet uit minstens 6 tekens bestaan");
                             }
@@ -125,10 +78,11 @@ public class MainActivity extends AppCompatActivity {
                                 inlogError.setText("Emailadres of wachtwoord is al in gebruik");
                             }
                         }
+
+                        // informs user that creation was succesful
                         else {
                             Toast.makeText(MainActivity.this, "created: " + email,
                                     Toast.LENGTH_SHORT).show();
-                            //mDatabase.child("nieuwsbrief").child(email.replaceAll(".", "")).setValue("afgemeld");
                         }
 
                         // ...
@@ -138,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void logIn(View view) {
 
-        loginEmail = (EditText) findViewById(R.id.loginemail);
-        loginPassword = (EditText) findViewById(R.id.loginpassword);
+        EditText loginEmail = (EditText) findViewById(R.id.loginemail);
+        EditText loginPassword = (EditText) findViewById(R.id.loginpassword);
 
+        // user data is retrieved from EditTexts
         email = loginEmail.getText().toString();
         password = loginPassword.getText().toString();
 
+        // handles lack of user input
         if(TextUtils.isEmpty(email)) {
             Log.i("ff", "checken");
             email = " ";
@@ -153,26 +109,30 @@ public class MainActivity extends AppCompatActivity {
             password = " ";
         }
 
+        // attempts to sign in user
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("logging in", "signInWithEmail:onComplete:" + task.isSuccessful());
 
-                        Log.i("ik ben hier", "en de taak is succesvol");
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
+                        // informs user sign in was unsuccesful
                         if (!task.isSuccessful()) {
+
                             Log.w("failed to log in", "signInWithEmail", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+
+                            // informs user what went wrong
                             inlogError.setText("Fout emailadres of wachtwoord");
                         }
+
+                        // informs user sign in was succesful
                         else {
-                            Log.i("maar kom", "ik hier nog");
                             Toast.makeText(MainActivity.this, "signed in: " + email,
                                     Toast.LENGTH_SHORT).show();
+
+                            // continues to search screen
                             startSearch();
                         }
 
@@ -183,14 +143,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void startSearch() {
 
-        Log.i("is dit", "het?");
-
-        Log.i("hier is alles", "nog oke");
-
+        // intent is created
         Intent intent = new Intent(this, SearchActivity.class);
-        intent.putExtra("search", " ");
 
-        Log.i("maar anders", "zit het hier");
+        // ensures all schools are listed when activity is started
+        intent.putExtra("search", "");
+
         startActivity(intent);
     }
 

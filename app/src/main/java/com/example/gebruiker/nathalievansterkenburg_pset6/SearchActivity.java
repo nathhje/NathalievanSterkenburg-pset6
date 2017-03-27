@@ -3,7 +3,6 @@ package com.example.gebruiker.nathalievansterkenburg_pset6;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,32 +26,38 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        Log.i("het lijkt of ik hier", "niet kom");
+        // email of current user is retrieved
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         String email = user.getEmail();
 
+        // email is displayed to inform which user is signed in
         TextView showEmail = (TextView) findViewById(R.id.useremail);
         showEmail.setText("Ingelogd als " + email);
 
-
+        // initial list is created upon starting activity
         searchBox = (EditText) findViewById(R.id.search);
         searchBox.setText(getIntent().getStringExtra("search"));
         String urlSearch = getIntent().getStringExtra("search");
 
+        // SearchAsyncTask is executed to retrieve schools and create initial list
         SearchAsyncTask asyncTask = new SearchAsyncTask(this);
         asyncTask.execute("plaatsnaam=" + urlSearch);
     }
 
     public void searchSchools(View view) {
-        search = searchBox.getText().toString();
-        String urlSearch = search.replaceAll(" ", "_");
+        // searches for schools in place from EditText
 
+        // the place is adjusted to fit in url
+        search = searchBox.getText().toString();
+        String urlSearch = search.replaceAll(" ", "-");
+
+        // SearchAsyncTask is executed to retrieve schools and create list
         SearchAsyncTask asyncTask = new SearchAsyncTask(this);
         asyncTask.execute("plaatsnaam=" + urlSearch);
     }
 
     public void makeSchoolAdapter(final ArrayList<String> schools) {
+        // sets adapter to retrieved list
 
         // adapter is initialized
         ArrayAdapter adapter = new ArrayAdapter<>
@@ -63,42 +68,45 @@ public class SearchActivity extends AppCompatActivity {
         assert thelist != null;
         thelist.setAdapter(adapter);
 
-        Log.i("ik denk", "hier te komen");
-
-        // when list item is clicked, additional info for that movie is retrieved
+        // when list item is clicked, additional info for that school is retrieved
         final InfoAsyncTask asyncTask = new InfoAsyncTask(this);
         thelist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                // info must be retrieved for right ID
+                // info must be retrieved for right school
                 asyncTask.execute("instellingsnaam=" + schools.get(position).replaceAll(" ", "-"));
             }
         });
     }
 
-    // opens InfoActivity when asyncTask is done
+
     public void detailsStartIntent(String school, String niveaus, String plaats, String adres,
                                    String website, String nummer) {
+        // opens InfoActivity when InfoAsyncTask is done
 
         Intent infoIntent = new Intent(this, InfoActivity.class);
 
+        // all info is put into intent
         infoIntent.putExtra("school", school);
         infoIntent.putExtra("niveaus", niveaus);
         infoIntent.putExtra("plaats", plaats);
         infoIntent.putExtra("adres", adres);
         infoIntent.putExtra("website", website);
         infoIntent.putExtra("nummer", nummer);
+
+        // remember what user searched for to recreate list upon going back to activity
         infoIntent.putExtra("search", search);
 
-        // InfoActivity
         startActivity(infoIntent);
     }
 
     public void startNieuwsbrief(View view) {
+        // starts new activity when clicked
         startActivity(new Intent(this, NieuwsbriefActivity.class));
     }
 
+    // nothing happens when BackPressed
     public void onBackPressed() {}
 
 }

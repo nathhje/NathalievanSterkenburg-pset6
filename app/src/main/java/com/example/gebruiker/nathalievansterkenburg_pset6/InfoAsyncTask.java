@@ -13,14 +13,13 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 /**
- * Created by Gebruiker on 20-3-2017.
+ * Created by Nathalie on 20-3-2017.
  */
 
 public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
 
     Context context;
     SearchActivity mainAct;
-    String ID;
 
     // context and mainAct are initialized
     public InfoAsyncTask(SearchActivity main) {
@@ -53,7 +52,7 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        // the information on the movie
+        // the information on the school
         String school = "error";
         String niveaus = "error";
         String plaats = "error";
@@ -67,15 +66,11 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
             // the result is put in a JSONObject
             JSONObject schoolsearch = new JSONObject(result);
 
-            Log.i("het object", schoolsearch.toString());
-
-            // the useful information is extracted from "search"
+            // the useful information is extracted from "results"
             JSONArray inschool = schoolsearch.getJSONArray("results");
-            Log.i("in resultaten", inschool.toString());
-            
             JSONObject inschoolsearch = inschool.getJSONObject(0);
-            Log.i("het resultaat", inschoolsearch.toString());
-            
+
+            // all pieces of information are stored in a string
             school = inschoolsearch.getString("INSTELLINGSNAAM");
             niveaus = inschoolsearch.getString("ONDERWIJSSTRUCTUUR");
             plaats = inschoolsearch.getString("PLAATSNAAM");
@@ -83,10 +78,6 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
                     inschoolsearch.getString("HUISNUMMER-TOEVOEGING");
             website = inschoolsearch.getString("INTERNETADRES");
             nummer = inschoolsearch.getString("TELEFOONNUMMER");
-
-            Log.i(school, niveaus);
-            Log.i(plaats, adres);
-            Log.i(website,nummer);
 
         } catch (JSONException e) {
             e.printStackTrace();
