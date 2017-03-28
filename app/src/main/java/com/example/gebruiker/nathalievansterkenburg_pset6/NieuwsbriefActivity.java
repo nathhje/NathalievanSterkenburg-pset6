@@ -71,44 +71,6 @@ public class NieuwsbriefActivity extends AppCompatActivity {
         mDatabase.addValueEventListener(postListener);
     }
 
-//    public void setListener() {
-//
-//        Log.i("nu ben ik benieuwd", "of deze tekst wel verschijnt");
-//        mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                Log.i("de user niet bestaat", user.getEmail());
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d("signed in", "onAuthStateChanged:signed_in:" + user.getUid());
-//                    Log.i("heh", user.getEmail());
-//                    email = user.getEmail();
-//                    Log.i("gaat de email goed", email);
-//                } else {
-//                    // User is signed out
-//                    Log.d("signed out", "onAuthStateChanged:signed_out");
-//                    email = "proxy@proxy.com";
-//                }
-//                // ...
-//            }
-//        };
-//    }
-//
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mAuthListener != null) {
-//            mAuth.removeAuthStateListener(mAuthListener);
-//        }
-//    }
-
     public void meldAan(View view) {
         // sets user to "aangemeld" in database
 

@@ -55,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
             password = " ";
         }
 
+        // create new user
+        putUserInDatabase(email, password);
+    }
+
+    public void putUserInDatabase(final String email, final String password) {
         // attempt at creating new user
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,15 +107,19 @@ public class MainActivity extends AppCompatActivity {
 
         // handles lack of user input
         if(TextUtils.isEmpty(email)) {
-            Log.i("ff", "checken");
             email = " ";
         }
         if(TextUtils.isEmpty(password)) {
-            Log.i("ff", "checkuh");
             password = " ";
         }
 
+        // signs in user
+        logUserIn(email, password);
+    }
+
+    public void logUserIn(final String email, String password) {
         // attempts to sign in user
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

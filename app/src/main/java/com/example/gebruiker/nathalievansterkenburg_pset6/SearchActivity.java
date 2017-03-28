@@ -81,19 +81,13 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    public void detailsStartIntent(String school, String niveaus, String plaats, String adres,
-                                   String website, String nummer) {
+    public void detailsStartIntent(School school) {
         // opens InfoActivity when InfoAsyncTask is done
 
         Intent infoIntent = new Intent(this, InfoActivity.class);
 
         // all info is put into intent
         infoIntent.putExtra("school", school);
-        infoIntent.putExtra("niveaus", niveaus);
-        infoIntent.putExtra("plaats", plaats);
-        infoIntent.putExtra("adres", adres);
-        infoIntent.putExtra("website", website);
-        infoIntent.putExtra("nummer", nummer);
 
         // remember what user searched for to recreate list upon going back to activity
         infoIntent.putExtra("search", search);

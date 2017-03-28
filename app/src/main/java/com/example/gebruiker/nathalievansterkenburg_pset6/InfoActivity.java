@@ -23,7 +23,7 @@ public class InfoActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mDatabase;
 
-    TextView school;
+    TextView theSchool;
     TextView niveaus;
     TextView plaats;
     TextView adres;
@@ -34,6 +34,7 @@ public class InfoActivity extends AppCompatActivity {
     String email;
     Button aanmelden;
     TextView aangemeld;
+    School school = new School();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +52,25 @@ public class InfoActivity extends AppCompatActivity {
 
         // info on school is stored in intent
         final Intent theIntent = getIntent();
+        school = (School) theIntent.getSerializableExtra("school");
+
+        // puts school info on screen
+        setInfo();
+
+        // the last thing the user searched, so they can return there
+        rememberPlace = theIntent.getStringExtra("search");
+
+        // sets listener for changes to database
+        watchForChanges(theIntent, school);
+    }
+
+    public void setInfo() {
+        // puts school info on screen
 
         aanmelden = (Button) findViewById(R.id.meeloopaanmelding);
         aangemeld = (TextView) findViewById(R.id.aangemeldmeelopen);
 
-        school = (TextView) findViewById(R.id.school);
+        theSchool = (TextView) findViewById(R.id.school);
         niveaus = (TextView) findViewById(R.id.niveaus);
         plaats = (TextView) findViewById(R.id.plaats);
         adres = (TextView) findViewById(R.id.adres);
@@ -63,24 +78,24 @@ public class InfoActivity extends AppCompatActivity {
         nummer = (TextView) findViewById(R.id.nummer);
 
         // info is put in TextViews
-        school.setText(theIntent.getStringExtra("school"));
-        niveaus.setText("Niveaus: " + theIntent.getStringExtra("niveaus"));
-        plaats.setText("Plaats: " + theIntent.getStringExtra("plaats"));
-        adres.setText("Adres: " + theIntent.getStringExtra("adres"));
-        website.setText("Website: " + theIntent.getStringExtra("website"));
-        nummer.setText("Telefoonnummer: " + theIntent.getStringExtra("nummer"));
+        theSchool.setText(school.getSchool());
+        niveaus.setText("Niveaus: " + school.getNiveaus());
+        plaats.setText("Plaats: " + school.getPlaats());
+        adres.setText("Adres: " + school.getAdres());
+        website.setText("Website: " + school.getWebsite());
+        nummer.setText("Telefoonnummer: " + school.getNummer());
+    }
 
-        // the last thing the user searched, so they can return there
-        rememberPlace = theIntent.getStringExtra("search");
-
+    public void watchForChanges(final Intent theIntent, final School school){
         // listener for changes to database
+
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // hides "aanmelden" button when user is "aangemeld"
 
                 // checks if user is "aangemeld"
-                if(dataSnapshot.child(theIntent.getStringExtra("school")).hasChild(email.replaceAll(".", ""))) {
+                if(dataSnapshot.child(school.getSchool()).hasChild(email.replaceAll("\\.", ""))) {
                     aangemeld.setVisibility(View.VISIBLE);
                     aanmelden.setVisibility(View.GONE);
                 }
@@ -94,47 +109,7 @@ public class InfoActivity extends AppCompatActivity {
 
         // listener is set
         mDatabase.addValueEventListener(postListener);
-
     }
-
-//    public void setListener() {
-//
-//        Log.i("nu ben ik benieuwd", "of deze tekst wel verschijnt");
-//        mAuthListener = new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                Log.i("er is toch", "wel een user");
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                Log.i("de user niet bestaat", user.getEmail());
-//                if (user != null) {
-//                    // User is signed in
-//                    Log.d("signed in", "onAuthStateChanged:signed_in:" + user.getUid());
-//                    Log.i("heh", user.getEmail());
-//                    email = user.getEmail();
-//                    Log.i("gaat de email goed", email);
-//                } else {
-//                    // User is signed out
-//                    Log.d("signed out", "onAuthStateChanged:signed_out");
-//                    email = "proxy@proxy.com";
-//                }
-//                // ...
-//            }
-//        };
-//    }
-
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (mAuthListener != null) {
-//            mAuth.removeAuthStateListener(mAuthListener);
-//        }
-//    }
 
     public void meeloopMeldAan(View view) {
         // puts email inside the school in database to indicate "aangemeld"
@@ -143,8 +118,8 @@ public class InfoActivity extends AppCompatActivity {
         aangemeld.setVisibility(View.VISIBLE);
 
         // the item is put in the database
-        String theChild = email.replaceAll(".", "");
-        mDatabase.child(getIntent().getStringExtra("school")).child(theChild).child("extra").setValue(email);
+        String theChild = email.replaceAll("\\.", "");
+        mDatabase.child(school.getSchool()).child(theChild).setValue(email);
     }
 
     @Override

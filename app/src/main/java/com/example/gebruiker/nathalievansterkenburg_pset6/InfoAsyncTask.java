@@ -52,14 +52,8 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
-        // the information on the school
-        String school = "error";
-        String niveaus = "error";
-        String plaats = "error";
-        String adres = "error";
-        String website = "error";
-        String nummer = "error";
-
+        // School object is initialized
+        School school = new School();
 
         try {
 
@@ -70,20 +64,20 @@ public class InfoAsyncTask extends AsyncTask<String, Integer, String> {
             JSONArray inschool = schoolsearch.getJSONArray("results");
             JSONObject inschoolsearch = inschool.getJSONObject(0);
 
-            // all pieces of information are stored in a string
-            school = inschoolsearch.getString("INSTELLINGSNAAM");
-            niveaus = inschoolsearch.getString("ONDERWIJSSTRUCTUUR");
-            plaats = inschoolsearch.getString("PLAATSNAAM");
-            adres = inschoolsearch.getString("STRAATNAAM") + " " +
-                    inschoolsearch.getString("HUISNUMMER-TOEVOEGING");
-            website = inschoolsearch.getString("INTERNETADRES");
-            nummer = inschoolsearch.getString("TELEFOONNUMMER");
+            // all pieces of information are stored in a School object
+            school.setSchool(inschoolsearch.getString("INSTELLINGSNAAM"));
+            school.setNiveaus(inschoolsearch.getString("ONDERWIJSSTRUCTUUR"));
+            school.setPlaats(inschoolsearch.getString("PLAATSNAAM"));
+            school.setAdres(inschoolsearch.getString("STRAATNAAM") + " " +
+                    inschoolsearch.getString("HUISNUMMER-TOEVOEGING"));
+            school.setWebsite(inschoolsearch.getString("INTERNETADRES"));
+            school.setNummer(inschoolsearch.getString("TELEFOONNUMMER"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         // the new activity is started with the data
-        this.mainAct.detailsStartIntent(school, niveaus, plaats, adres, website, nummer);
+        this.mainAct.detailsStartIntent(school);
     }
 }
