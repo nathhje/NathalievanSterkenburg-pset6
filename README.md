@@ -11,3 +11,5 @@ You can also get more information on a specific school and "submit" for a tour o
 ![start](https://github.com/nathhje/NathalievanSterkenburg-pset6/blob/master/doc/info%20on%20school.png)
 
 ![start](https://github.com/nathhje/NathalievanSterkenburg-pset6/blob/master/doc/news%20letter.png)
+
+[![BCH compliance](https://bettercodehub.com/edge/badge/nathhje/NathalievanSterkenburg-pset6)](https://bettercodehub.com/)
